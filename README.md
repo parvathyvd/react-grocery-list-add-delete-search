@@ -1,15 +1,13 @@
-# "React JS - React Controlled Form Inputs"
+#Link
+https://react-js-grocery-list-add-del-search.netlify.app/
 
-✅ [Check out my YouTube Channel with all of my tutorials](https://www.youtube.com/DaveGrayTeachesCode).
+![image](https://user-images.githubusercontent.com/25538870/196493645-b39bc893-3bee-4b70-9d40-94b20d1fd69b.png)
 
-**Description:**
+![image](https://user-images.githubusercontent.com/25538870/196494126-b4560b56-f4c1-4c92-a3b4-b83179685b99.png)
 
-This repository shares the styles applied during the Youtube tutorial. The tutorial is part of a [Learn React Playlist](https://www.youtube.com/playlist?list=PL0Zuz27SZ-6PrE9srvEn8nbhOOyxnWXfp) on my channel.  
+![image](https://user-images.githubusercontent.com/25538870/196494308-4a0f7b17-9921-4704-8e72-8a80678fd68e.png)
+![image](https://user-images.githubusercontent.com/25538870/196494354-a630750d-c10d-429f-b48f-d9394d175023.png)
 
-[YouTube Tutorial](https://youtu.be/r5ombQn3fHY) for this repository.
 
-I suggest completing my [8 hour JavaScript course tutorial video](https://youtu.be/EfAl9bwzVZk) if you are new to Javascript.
 
-### Academic Honesty
 
-**DO NOT COPY FOR AN ASSIGNMENT** - Avoid plagiargism and adhere to the spirit of this [Academic Honesty Policy](https://www.freecodecamp.org/news/academic-honesty-policy/).
