@@ -4,33 +4,71 @@ import AddItem from "./AddItem";
 import Content from "./Content";
 import Footer from "./Footer";
 import { useCallback, useEffect, useState } from "react";
+import apiRequest from "./apiRequest";
 
 function App() {
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("shoppinglist")) || []
-  );
+  const [items, setItems] = useState([]);
 
   const [newItem, setNewItem] = useState("");
   const [search, setSearch] = useState("");
   const [filteredItem, setFilteredItem] = useState(items);
+  const [fetchErr, setFetchErr] = useState(null);
 
-  const addItem = (item) => {
+  const API_URL = "http://localhost:3500/items";
+
+  const addItem = async (item) => {
     const id = Math.floor(Math.random() * 100000 + 2);
     const myNewItem = { id, checked: false, item };
     const listItems = [...items, myNewItem];
     setItems(listItems);
+    //POST request  - Add an item
+
+    const postOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(myNewItem),
+    };
+
+    const res = await fetch(apiRequest(API_URL, postOptions));
+    // console.log(res);
+    // if (res) setFetchErr(res);
   };
 
-  const handleCheck = (id) => {
+  const handleCheck = async (id) => {
     const listItems = items.map((item) =>
       item.id === id ? { ...item, checked: !item.checked } : item
     );
     setItems(listItems);
+    // Update the items checked property
+
+    const updateItem = listItems.find((item) => item.id === id);
+    console.log(updateItem.checked);
+
+    const updateOptions = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ checked: updateItem.checked }),
+    };
+
+    const res = await fetch(`${API_URL}/${id}`, updateOptions);
+    console.log(res);
+    if (res) setFetchErr(res.message);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const listItems = items.filter((item) => item.id !== id);
     setItems(listItems);
+
+    const delOptions = {
+      method: "DELETE",
+    };
+    const res = await fetch(`${API_URL}/${id}`, delOptions);
+    console.log(res);
+    // if (res) setFetchErr(res);
   };
 
   const handleSubmit = (e) => {
@@ -49,9 +87,27 @@ function App() {
   }, [search, items]);
 
   useEffect(() => {
-    localStorage.setItem("shoppinglist", JSON.stringify(items));
+    const getItems = async () => {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Something went wrong");
+        const result = await res.json();
+        setItems(result);
+        setFetchErr(null);
+      } catch (err) {
+        console.log(err);
+        setFetchErr(err.message);
+      } finally {
+        // executes always after success or error - Loading state false
+        console.log("End");
+      }
+    };
+    getItems();
+  }, []);
+
+  useEffect(() => {
     getFiltered();
-  }, [getFiltered, items]);
+  }, [getFiltered]);
 
   return (
     <div className="App">
@@ -62,14 +118,15 @@ function App() {
         handleSubmit={handleSubmit}
       />
       <SearchItem search={search} setSearch={setSearch} />
-      {items && (
+      {fetchErr && <p>{fetchErr}</p>}
+      {!fetchErr && items && (
         <Content
           items={filteredItem}
           handleCheck={handleCheck}
           handleDelete={handleDelete}
         />
       )}
-      <Footer length={items && items.length} />
+      {!fetchErr && <Footer length={items.length > 0 && items.length} />}
     </div>
   );
 }
